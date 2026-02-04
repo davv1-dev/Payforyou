@@ -1,22 +1,21 @@
 package com.apipagamentos.payforyou.model;
 
-import com.apipagamentos.payforyou.dto.DadosPedido;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Table(name = "pedidos")
 @Entity(name = "Pedidos")
 @AllArgsConstructor
 @Getter
+@Setter
 @EqualsAndHashCode(of = "id")
 public class Pedido {
     @Id
@@ -37,12 +36,7 @@ public class Pedido {
         this.status = StatusPedido.CRIADO;
         this.valorTotal = BigDecimal.ZERO;
     }
-    public void pedidoPagar(){
-        if (this.status == StatusPedido.FINALIZADO){
-            DadosPedido pedido = new DadosPedido(this);
 
-        }
-    }
     public void adicionarItem(ItemPedido itemPedido){
         itemPedido.setPedido(this);
         this.itens.add(itemPedido);
