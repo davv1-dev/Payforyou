@@ -26,8 +26,8 @@ public class ItemPedido {
         this.produto = dadosItem.produto();
         this.precoUnitario = dadosItem.valorUnitario();
     }
-public BigDecimal getSubtotal(){
+    public BigDecimal getSubtotal(){
         return precoUnitario.multiply(BigDecimal.valueOf(quantidade));
-}
+    }
 
 }

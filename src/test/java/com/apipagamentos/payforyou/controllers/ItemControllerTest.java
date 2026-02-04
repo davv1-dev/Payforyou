@@ -1,16 +1,11 @@
 package com.apipagamentos.payforyou.controllers;
 
-import com.apipagamentos.payforyou.infra.PedidoNaoEncontradoException;
-import com.apipagamentos.payforyou.model.Pedido;
-import com.apipagamentos.payforyou.model.StatusPedido;
+import com.apipagamentos.payforyou.infra.ItemNaoSalvoNoCatalogoException;
 import com.apipagamentos.payforyou.service.ItemService;
-import com.apipagamentos.payforyou.service.PedidoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
@@ -18,26 +13,24 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureJsonTesters
-public class PedidoControllerTest {
+public class ItemControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockitoBean
-    private PedidoService service;
-    @MockitoBean
-    private Pedido pedido;
+    private ItemService service;
 
     @Test
-    @DisplayName("Deve retornar 404")
-    void pagarPedidoCenario1() throws Exception {
-        Mockito.when(service.pagarPedido(1l)).thenThrow(new PedidoNaoEncontradoException("Não foi possivel encontrar pedido"));
+    @DisplayName("Testando ItemNaoSalvoNoCatalogoException")
+    void buscandoItemPorIdCenario1() throws Exception {
+        Mockito.when(service.buscarPorId(1L)).thenThrow(new ItemNaoSalvoNoCatalogoException("Este item näo esta presente no catalogo."));
 
-        var response = mvc.perform(post("/pedidos/pagar/1"))
+        var response = mvc.perform(get("/item/1"))
                 .andReturn().getResponse();
         assertEquals(HttpStatus.NOT_FOUND.value(),response.getStatus());
-        }
     }
+}
