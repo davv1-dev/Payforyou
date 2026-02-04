@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "pedidos")
-@Entity(name = "Pedidos")
+@Table(name = "pedido")
+@Entity(name = "pwedido")
 @AllArgsConstructor
 @Getter
 @Setter
