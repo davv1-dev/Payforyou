@@ -22,7 +22,6 @@ public class ItemController {
         return ResponseEntity.created(uri).body(itemSalvo);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity buscarPedidoPorId(@PathVariable Long id){
         var item = service.buscarPorId(id);

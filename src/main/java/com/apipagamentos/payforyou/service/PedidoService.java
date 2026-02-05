@@ -1,9 +1,6 @@
 package com.apipagamentos.payforyou.service;
 
-import com.apipagamentos.payforyou.dto.DadosItemRetorno;
-import com.apipagamentos.payforyou.dto.DadosPagamento;
-import com.apipagamentos.payforyou.dto.DadosPedidoRetorno;
-import com.apipagamentos.payforyou.dto.DadosStatusPagamento;
+import com.apipagamentos.payforyou.dto.*;
 import com.apipagamentos.payforyou.infra.ItemNaoSalvoNoCatalogoException;
 import com.apipagamentos.payforyou.infra.PedidoNaoFinalizadoException;
 import com.apipagamentos.payforyou.infra.PedidoNaoEncontradoException;
@@ -17,6 +14,8 @@ import com.apipagamentos.payforyou.repository.PedidoRepository;
 import com.apipagamentos.payforyou.service.validacoes.ValidadorPedidoPago;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -56,5 +55,18 @@ public class PedidoService {
         return retorno;
 
     }
+    @Transactional
+    public DadosPedidoRetorno obterPedidoPorId(Long id){
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(()-> new PedidoNaoEncontradoException("Näo foi possivel encontrar esse pedido."));
+        DadosPedidoRetorno retorno = new DadosPedidoRetorno(pedido);
+        return retorno;
+    }
+    public Page<DadosPedidosListagem> listar (Pageable page){
+        return pedidoRepository.findAll(page).map(DadosPedidosListagem::new);
+    }
 
+    public void criarPedido() {
+        Pedido pedidoCriado = new Pedido();
+        pedidoRepository.save(pedidoCriado);
+    }
 }
