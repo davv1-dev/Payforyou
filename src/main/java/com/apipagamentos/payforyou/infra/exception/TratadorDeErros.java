@@ -1,9 +1,6 @@
 package com.apipagamentos.payforyou.infra.exception;
 
-import com.apipagamentos.payforyou.infra.ItemNaoSalvoNoCatalogoException;
-import com.apipagamentos.payforyou.infra.PedidoNaoEncontradoException;
-import com.apipagamentos.payforyou.infra.PedidoNaoFinalizadoException;
-import com.apipagamentos.payforyou.infra.ValidatorException;
+import com.apipagamentos.payforyou.infra.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -32,6 +29,16 @@ public class TratadorDeErros {
     @ExceptionHandler(PedidoNaoFinalizadoException.class)
     public ResponseEntity<List<DadosErro>> tratandoPedidoNaoFinalizado(PedidoNaoFinalizadoException ex){
         var erro = new DadosErro("Pedido",ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of(erro));
+    }
+    @ExceptionHandler(ErroAoGerarTokenException.class)
+    public ResponseEntity<List<DadosErro>> tratandoPedidoNaoFinalizado(ErroAoGerarTokenException ex){
+        var erro = new DadosErro("TokeJWT",ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of(erro));
+    }
+    @ExceptionHandler(TokenInvalidoException.class)
+    public ResponseEntity<List<DadosErro>> tratandoPedidoNaoFinalizado(TokenInvalidoException ex){
+        var erro = new DadosErro("TokeJWT",ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of(erro));
     }
     private record DadosErro(String campo,String mensagem){
